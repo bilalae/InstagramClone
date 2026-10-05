@@ -1,28 +1,28 @@
 import { useAuth } from "./hooks/useAuth";
 import { useEffect, useState } from "react";
 import {
-  Bookmark,
   Compass,
   Film,
   Heart,
   House,
   MessageCircle,
+  Menu,
   PlusSquare,
   Search,
-  Settings,
   UserRound,
 } from "lucide-react";
 import { useRoute, navigate } from "./hooks/useRoute";
 import { AuthLoading, AuthPage } from "./features/auth/Auth";
-import { ProfileEditor, ProfilePage } from "./features/profile/Profile";
+import { FollowButton, ProfileEditor, ProfilePage } from "./features/profile/Profile";
 import { CreatePost, PostList } from "./features/posts/Posts";
 import { SearchPage } from "./features/search/Search";
 import { Stories } from "./features/stories/Stories";
 import { Messaging } from "./features/messaging/Messaging";
 import { NotificationsPage } from "./features/notifications/Notifications";
 import { Saved, SettingsPage } from "./features/settings/Settings";
-import { Link, Status } from "./components/Shared";
+import { Avatar, Link, Status } from "./components/Shared";
 import { db } from "./services/social";
+import type { Profile } from "./types/social";
 import "./real.css";
 import { Toast } from "./components/Toast";
 export default function RealApp() {
@@ -151,19 +151,14 @@ function AuthenticatedApp() {
     ["/explore", "Explore", Compass],
     ["/reels", "Reels", Film],
     ["/direct", "Messages", MessageCircle],
-    ["/notifications", `Notifications${unread ? ` (${unread})` : ""}`, Heart],
+    ["/notifications", "Notifications", Heart],
     ["/create", "Create", PlusSquare],
     [`/${profile.username}`, "Profile", UserRound],
-    ["/saved", "Saved", Bookmark],
-    ["/settings", "Settings", Settings],
   ] as const;
   let content: React.ReactNode;
   if (path === "/")
     content = (
-      <section className="feed-page">
-        <Stories me={profile} />
-        <PostList me={profile} />
-      </section>
+      <HomeFeed me={profile} />
     );
   else if (path === "/search") content = <SearchPage me={profile} />;
   else if (path === "/explore")
@@ -249,14 +244,83 @@ function AuthenticatedApp() {
               <span className={path === to ? "nav-active" : ""}>
                 <Icon size={24} />
                 <span>{label}</span>
+                {to === "/notifications" && unread > 0 && (
+                  <b className="nav-badge" aria-label={`${unread} unread notifications`}>
+                    {unread > 9 ? "9+" : unread}
+                  </b>
+                )}
               </span>
             </Link>
           ))}
         </nav>
+        <Link to="/settings" ariaLabel="More" current={path.startsWith("/settings")}>
+          <span className={`sidebar-more ${path.startsWith("/settings") ? "nav-active" : ""}`}>
+            <Menu size={24} />
+            <span>More</span>
+          </span>
+        </Link>
       </aside>
       <main id="main" className="real-main" key={path}>
+        <header className="real-mobile-header">
+          <Link to="/" ariaLabel="Instagram home"><span className="brand">Instagram</span></Link>
+          <div>
+            <Link to="/notifications" ariaLabel="Notifications"><Heart size={24} /></Link>
+            <Link to="/direct" ariaLabel="Messages"><MessageCircle size={24} /></Link>
+          </div>
+        </header>
         {content}
       </main>
+    </div>
+  );
+}
+
+function HomeFeed({ me }: { me: Profile }) {
+  const [suggestions, setSuggestions] = useState<Profile[]>([]);
+  useEffect(() => {
+    let live = true;
+    void db
+      .from("profiles")
+      .select("*")
+      .neq("id", me.id)
+      .order("created_at", { ascending: false })
+      .limit(5)
+      .then((result) => {
+        if (live && !result.error) setSuggestions(result.data || []);
+      });
+    return () => { live = false; };
+  }, [me.id]);
+  return (
+    <div className="home-layout">
+      <section className="feed-page">
+        <Stories me={me} />
+        <PostList me={me} />
+      </section>
+      <aside className="feed-suggestions" aria-label="Suggested accounts">
+        <div className="suggestion-self">
+          <Avatar path={me.avatar_url} name={me.username} />
+          <Link to={`/${me.username}`}>
+            <strong>{me.username}</strong>
+            <small>{me.display_name}</small>
+          </Link>
+          <Link to="/settings">Switch</Link>
+        </div>
+        <header><strong>Suggested for you</strong><Link to="/search">See all</Link></header>
+        {suggestions.map((profile) => (
+          <div className="suggestion-person" key={profile.id}>
+            <Avatar path={profile.avatar_url} name={profile.username} />
+            <Link to={`/${profile.username}`}>
+              <strong>{profile.username}</strong>
+              <small>Suggested for you</small>
+            </Link>
+            <FollowButton me={me.id} target={profile} />
+          </div>
+        ))}
+        <footer>
+          About · Help · Press · API · Jobs · Privacy · Terms<br />
+          Locations · Language · Meta Verified<br /><br />
+          © 2026 INSTAGRAM CLONE
+        </footer>
+      </aside>
     </div>
   );
 }

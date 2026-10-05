@@ -100,6 +100,39 @@ button { cursor: pointer; }
   .mobile-bottom-nav button img { width: 24px; height: 24px; border-radius: 50%; }
 }
 
+/* Shared Instagram sign-in presentation for demo mode */
+.auth-page { min-height: 100dvh; display: flex; flex-direction: column; background: #fff; }
+.auth-stage { width: min(875px, calc(100% - 32px)); min-height: 790px; display: flex; align-items: center; justify-content: center; gap: 32px; margin: 0 auto; padding: 32px 0 20px; }
+.auth-page .auth-screen { width: 350px; min-height: auto; display: block; flex: 0 0 350px; padding: 0; background: transparent; }
+.auth-page .auth-card { width: 350px; }
+.auth-device { position: relative; width: 455px; height: 590px; flex: 0 0 455px; }
+.auth-phone { position: absolute; width: 260px; height: 535px; overflow: hidden; border: 7px solid #111; border-radius: 36px; background: #fff; box-shadow: 0 16px 42px #0002; }
+.auth-phone-back { top: 8px; left: 8px; transform: rotate(-7deg); background: linear-gradient(155deg,#f9ce34,#ee2a7b 48%,#6228d7); }
+.auth-phone-back::before { position:absolute; inset:45px 18px; border-radius:20px; background:url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80') center/cover; content:""; }
+.auth-phone-front { right: 0; bottom: 0; padding-top: 24px; }
+.auth-phone-camera { position:absolute; top:8px; left:50%; width:72px; height:16px; transform:translateX(-50%); border-radius:12px; background:#111; }
+.auth-phone-bar { height:40px; display:grid; place-items:center; border-bottom:1px solid #eee; font:400 25px/1 'Grand Hotel',cursive; }
+.auth-phone-story-row { height:68px; display:flex; gap:9px; align-items:center; padding:8px 10px; }
+.auth-phone-story-row b { width:42px; height:42px; border:2px solid #d62976; border-radius:50%; background:linear-gradient(135deg,#ffd66b,#d62976); box-shadow:inset 0 0 0 3px #fff; }
+.auth-phone-post { height:285px; background:url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=700&q=85') center/cover; }
+.auth-phone-actions { display:flex; gap:14px; padding:10px 12px 4px; font-size:23px; }
+.auth-phone-copy { display:grid; gap:6px; padding:0 12px; }
+.auth-phone-copy b,.auth-phone-copy span { height:7px; border-radius:5px; background:#262626; }
+.auth-phone-copy b { width:80px; }.auth-phone-copy span { width:180px; background:#c7c7c7; }.auth-phone-copy span:last-child { width:130px; }
+.auth-footer { margin-top:auto; padding:16px 20px 50px; color:#737373; font:400 12px/1.5 'Inter',sans-serif; text-align:center; }
+.auth-footer nav { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 16px; }.auth-footer p { margin:18px 0 0; }
+.auth-page .auth-logo { margin-top: 8px; font-size: 48px; }
+.auth-page .auth-card > p:empty { display:none; }
+.auth-page .auth-card > p { color:#737373; font-weight:600; }
+.auth-page .facebook-login { margin-top:0; }
+@media (max-width: 760px) {
+  .auth-stage { width:100%; min-height:auto; flex:1; padding:12px 0 20px; }
+  .auth-device { display:none; }
+  .auth-page .auth-screen { width:100%; flex-basis:auto; padding:0 20px; }
+  .auth-page .auth-card { width:min(350px,100%); margin:0 auto; border:0; }
+  .auth-footer { padding-bottom:24px; }
+}
+
 /* App states and interactive surfaces */
 .brand-button { border: 0; background: none; cursor: pointer; text-align: left; }
 .mobile-actions button, .mobile-header button { border: 0; background: none; display: grid; place-items: center; color: inherit; }
@@ -210,3 +243,11 @@ button { cursor: pointer; }
   .profile-view > header div { display: grid; gap: 12px; }
   .profile-stats { justify-content: space-around; text-align: center; }
 }
+
+/* Final auth cascade */
+.auth-page{min-height:100dvh;display:flex;flex-direction:column;background:#fff}.auth-page .auth-stage{width:min(875px,calc(100% - 32px));min-height:790px;display:flex;align-items:center;justify-content:center;gap:32px;margin:0 auto;padding:32px 0 20px}.auth-page .auth-screen{width:350px;min-height:auto;display:block;flex:0 0 350px;padding:0;background:transparent}.auth-page .auth-card{width:350px}.auth-page .auth-footer{margin-top:auto;padding:16px 20px 50px;color:#737373;font:400 12px/1.5 'Inter',sans-serif;text-align:center}.auth-page .auth-footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px}.auth-page .auth-footer p{margin:18px 0 0}.auth-page .auth-logo{margin-top:8px;font-size:48px}.auth-page .auth-card>p:empty{display:none}.auth-page .auth-card>p{color:#737373;font-weight:600}.auth-page .facebook-login{margin-top:0}
+.auth-page .auth-divider{display:flex;align-items:center;gap:18px;margin:14px 0;color:#737373;font-size:13px;font-weight:600}.auth-page .auth-divider::before,.auth-page .auth-divider::after{height:1px;flex:1;background:#dbdbdb;content:""}.auth-page .facebook-login{width:100%;padding:0;border:0;background:transparent;color:#385185;font:600 14px 'Inter',sans-serif}.auth-page .forgot-button{display:block;margin:18px auto 0}.auth-page .auth-switch{margin-top:22px}
+@media(max-width:760px){.auth-page .auth-stage{width:100%;min-height:auto;flex:1;padding:12px 0 20px}.auth-page .auth-device{display:none}.auth-page .auth-screen{width:100%;flex-basis:auto;padding:0 20px}.auth-page .auth-card{width:min(350px,100%);margin:0 auto;border:0}.auth-page .auth-footer{max-width:100%;overflow:hidden;padding:16px 8px 24px}.auth-page .auth-footer nav{gap:7px 12px}}
+
+@media(min-width:1101px){.feed-layout{width:853px;grid-template-columns:470px 319px;gap:64px}.feed{width:470px}.post-image{aspect-ratio:1/1}.right-rail{padding-top:18px}}
+@media(max-width:700px){html,body,#root{max-width:100%;overflow-x:hidden}.mobile-search{display:none}.mobile-bottom-nav{width:100vw;max-width:100vw;overflow:hidden}.mobile-header{position:sticky;top:0;z-index:4;height:60px}.stories-panel{padding-top:12px}.stories-row{overflow-x:auto;scrollbar-width:none}.stories-row::-webkit-scrollbar{display:none}.post-image{width:100%;aspect-ratio:1/1}.mobile-actions{flex:0 0 auto}}

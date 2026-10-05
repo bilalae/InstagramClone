@@ -9,7 +9,22 @@ export function AuthPage({ path }: { path: string }) {
     forgot = path === "/forgot-password",
     reset = path === "/reset-password";
   return (
-    <main className="real-auth">
+    <div className="auth-page">
+      <div className="auth-stage">
+        {!signup && !forgot && !reset && (
+          <div className="auth-device" aria-hidden="true">
+            <div className="auth-phone auth-phone-back"><span /></div>
+            <div className="auth-phone auth-phone-front">
+              <i className="auth-phone-camera" />
+              <div className="auth-phone-bar">Instagram</div>
+              <div className="auth-phone-story-row"><b /><b /><b /><b /></div>
+              <div className="auth-phone-post" />
+              <div className="auth-phone-actions"><span>♡</span><span>○</span><span>⌁</span></div>
+              <div className="auth-phone-copy"><b /><span /><span /></div>
+            </div>
+          </div>
+        )}
+        <main className="real-auth">
       <section className="auth-panel">
         <h1 className="brand">Instagram</h1>
         {(signup || forgot || reset) && (
@@ -167,7 +182,18 @@ export function AuthPage({ path }: { path: string }) {
           </Link>
         </section>
       )}
-    </main>
+        </main>
+      </div>
+      <footer className="auth-footer">
+        <nav aria-label="Instagram links">
+          <a href="https://about.meta.com/">Meta</a><a href="https://about.instagram.com/">About</a>
+          <a href="https://about.instagram.com/blog/">Blog</a><a href="https://about.instagram.com/about-us/careers">Jobs</a>
+          <a href="https://help.instagram.com/">Help</a><a href="https://developers.facebook.com/docs/instagram">API</a>
+          <a href="https://privacycenter.instagram.com/policy/">Privacy</a><a href="https://help.instagram.com/581066165581870">Terms</a>
+        </nav>
+        <p>English · © 2026 Instagram clone</p>
+      </footer>
+    </div>
   );
 }
 export function AuthLoading({ error }: { error: string }) {
